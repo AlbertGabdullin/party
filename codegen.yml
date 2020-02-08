@@ -1,0 +1,10 @@
+overwrite: true
+schema: "https://rickandmortyapi.com/graphql/"
+documents: null
+generates:
+  src/types/index.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - "typescript-resolvers"
