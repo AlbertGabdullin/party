@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { Result } from '../../types';
 import RemoveIcon from './RemoveIcon';
@@ -66,10 +66,16 @@ const Person = ({
   isPersonType,
   setPerson,
 }: PersonProps): JSX.Element => {
+  const handleRemove = (e: MouseEvent): void => {
+    e.stopPropagation();
+    if (onRemove) {
+      onRemove();
+    }
+  };
   return (
     <Wrapper>
       <PersonImage imgUrl={imgUrl} onClick={setPerson}>
-        {onRemove && <StyledCloseIcon onClick={onRemove} />}
+        {onRemove && <StyledCloseIcon onClick={handleRemove} />}
         {isPersonType && !imgUrl && <PersonType>{children}</PersonType>}
       </PersonImage>
     </Wrapper>

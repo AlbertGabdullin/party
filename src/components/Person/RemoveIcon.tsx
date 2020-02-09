@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {MouseEvent} from 'react';
 
 interface IconProps {
   width?: number;
@@ -7,7 +7,7 @@ interface IconProps {
   color?: string;
   background?: string;
   iconColor?: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
 }
 
 const RemoveIcon = ({

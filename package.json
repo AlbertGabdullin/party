@@ -30,7 +30,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,6 +68,8 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^3.1.2",
+    "gh-pages": "^2.2.0",
     "prettier": "^1.19.1"
-  }
+  },
+  "homepage": "https://albertgabdullin.github.io/party"
 }
