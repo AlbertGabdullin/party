@@ -11,9 +11,19 @@ const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   padding-top: 150px;
+  padding-right: 10px;
+  padding-left: 10px;
   min-height: 700px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding-top: 100px;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 50px;
+  }
 `;
 
 const App = () => {

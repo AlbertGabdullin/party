@@ -14,7 +14,7 @@ const PartyContainer = styled.div`
 
 const PartyPersons = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const PartyHead = styled.div`

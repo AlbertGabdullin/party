@@ -8,6 +8,11 @@ const Wrapper = styled.div`
   max-width: 200px;
   height: 220px;
   padding: 10px;
+
+  @media (max-width: 480px) {
+    max-width: 150px;
+    height: 180px;
+  }
 `;
 
 interface PersonImage {
