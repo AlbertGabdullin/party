@@ -10,7 +10,7 @@ interface IconProps {
   onClick?: () => void;
 }
 
-const CloseIcon = ({
+const RemoveIcon = ({
   width = 30,
   height = 30,
   opacity = 0.75,
@@ -18,7 +18,7 @@ const CloseIcon = ({
   iconColor = '#000',
   onClick,
   ...rest
-}: IconProps) => {
+}: IconProps): JSX.Element => {
   return (
     <svg
       width={width}
@@ -42,4 +42,4 @@ const CloseIcon = ({
   );
 };
 
-export default CloseIcon;
+export default RemoveIcon;

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_PARTY = gql`
-  query {
+  query PartyQuery {
     party @client {
       rick {
         id
@@ -18,7 +18,7 @@ export const GET_PARTY = gql`
 `;
 
 export const GET_PERSONS = gql`
-  query($filter: FilterCharacter) {
+  query CharactersQuery($filter: FilterCharacter) {
     characters(filter: $filter) {
       results {
         id
@@ -30,7 +30,7 @@ export const GET_PERSONS = gql`
 `;
 
 export const SET_PARTY_PERSON = gql`
-  mutation($person: Person) {
+  mutation SetPartyPersonMutation($person: SetPerson) {
     setPartyPerson(person: $person) @client
   }
 `;

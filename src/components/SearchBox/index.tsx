@@ -10,18 +10,16 @@ const SearchInput = styled.input`
   margin-bottom: 30px;
 `;
 
-interface SearchBoxTypes {
+interface SearchBoxProps {
   onChange: (value: string | number) => void;
 }
 
-const SearchBox = ({ onChange }: SearchBoxTypes) => {
-  return (
-    <SearchInput
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(e.target.value)
-      }
-    />
-  );
-};
+const SearchBox = ({ onChange }: SearchBoxProps) => (
+  <SearchInput
+    onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+      onChange(e.target.value)
+    }
+  />
+);
 
 export default SearchBox;

@@ -1,27 +1,15 @@
 import { GET_PARTY } from '../queries';
-import { PersonItem } from '../containers/Persons';
-
-interface Person {
-  id: number;
-  name: string;
-  image: string;
-}
-
-interface SetSearchValueType {
-  person: PersonItem;
-}
+import { ApolloCache } from 'apollo-cache';
+import { PartyQuery, Result } from '../types';
 
 export const resolvers = {
   Mutation: {
     setPartyPerson: (
       _: any,
-      { person }: SetSearchValueType,
-      { cache }: any,
+      { person }: { person: Result },
+      { cache }: { cache: ApolloCache<any> },
     ) => {
-      const {
-        party: { rick, morty },
-      } = cache.readQuery({ query: GET_PARTY });
-
+      const data = cache.readQuery<PartyQuery>({ query: GET_PARTY });
       const isRick = person.name.toLowerCase().includes('rick');
       const isMorty = person.name.toLowerCase().includes('morty');
 
@@ -35,7 +23,7 @@ export const resolvers = {
                   image: person.image,
                   __typename: 'Character',
                 }
-              : rick,
+              : data?.party?.rick,
             morty: isMorty
               ? {
                   id: person.id,
@@ -43,11 +31,13 @@ export const resolvers = {
                   image: person.image,
                   __typename: 'Character',
                 }
-              : morty,
+              : data?.party?.morty,
             __typename: 'Party',
           },
         },
       });
+
+      return person;
     },
   },
 };

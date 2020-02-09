@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import CloseIcon from './CloseIcon';
-import { useMutation } from '@apollo/react-hooks';
-import { SET_PARTY_PERSON } from '../../queries';
-import { PersonItem } from '../../containers/Persons';
+import { Result } from '../../types';
+import RemoveIcon from './RemoveIcon';
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 220px;
+  max-width: 200px;
   height: 220px;
   padding: 10px;
 `;
@@ -21,7 +19,6 @@ const PersonImage = styled.div`
   display: block;
   width: 100%;
   height: 100%;
-  border: 1px solid #111;
   background: #dadada;
   cursor: pointer;
 
@@ -33,7 +30,7 @@ const PersonImage = styled.div`
   `}
 `;
 
-const StyledCloseIcon = styled(CloseIcon)`
+const StyledCloseIcon = styled(RemoveIcon)`
   position: absolute;
   top: 8px;
   right: 8px;
@@ -52,13 +49,14 @@ const PersonType = styled.span`
   text-transform: uppercase;
 `;
 
-interface PersonTypes {
-  id?: number;
+interface PersonProps {
+  id?: string;
   imgUrl?: string;
   onRemove?: () => void;
   children?: string | React.ReactChild;
   isPersonType?: boolean;
-  person?: PersonItem;
+  person?: Result;
+  setPerson?: () => void;
 }
 
 const Person = ({
@@ -66,25 +64,11 @@ const Person = ({
   onRemove,
   children,
   isPersonType,
-  person,
-}: PersonTypes) => {
-  const [setPartyPerson] = useMutation(SET_PARTY_PERSON);
-
+  setPerson,
+}: PersonProps): JSX.Element => {
   return (
     <Wrapper>
-      <PersonImage
-        imgUrl={imgUrl}
-        onClick={
-          person
-            ? () =>
-                setPartyPerson({
-                  variables: {
-                    person: person,
-                  },
-                })
-            : undefined
-        }
-      >
+      <PersonImage imgUrl={imgUrl} onClick={setPerson}>
         {onRemove && <StyledCloseIcon onClick={onRemove} />}
         {isPersonType && !imgUrl && <PersonType>{children}</PersonType>}
       </PersonImage>

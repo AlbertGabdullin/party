@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import debounce from 'lodash/debounce';
-import SearchBox from './containers/SearchBox';
+import SearchBox from './components/SearchBox';
 import './App.css';
 import Persons from './containers/Persons';
 import Party from './containers/Party';
 
 const Container = styled.div`
-  max-width: 810px;
+  max-width: 800px;
   width: 100%;
   margin: 0 auto;
   padding-top: 150px;

@@ -1,44 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { resolvers } from './resolvers';
-
-const cache = new InMemoryCache({});
-
-const client = new ApolloClient({
-  uri: 'https://rickandmortyapi.com/graphql',
-  cache,
-  resolvers,
-});
-
-cache.writeData({
-  data: {
-    party: {
-      rick: {
-        id: '',
-        name: '',
-        image: '',
-        __typename: 'Character',
-      },
-      morty: {
-        id: '',
-        name: '',
-        image: '',
-        __typename: 'Character',
-      },
-      __typename: 'Party',
-    },
-  },
-});
+import App from './App';
+import { GlobalStyles } from './components/GlobalStyles';
+import * as serviceWorker from './serviceWorker';
+import { client } from './client';
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
+  <Fragment>
+    <GlobalStyles />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Fragment>,
   document.getElementById('root'),
 );
 

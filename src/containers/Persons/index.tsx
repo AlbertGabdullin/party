@@ -1,8 +1,14 @@
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useCallback } from 'react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
-import { GET_PERSONS } from '../../queries';
+import { GET_PERSONS, SET_PARTY_PERSON } from '../../queries';
 import Person from '../../components/Person';
+import {
+  CharactersQuery,
+  CharactersQueryVariables,
+  Result,
+  Result as ResultItem,
+} from '../../types';
 
 const PersonsContainer = styled.div`
   display: flex;
@@ -12,20 +18,28 @@ const PersonsContainer = styled.div`
   margin-right: -10px;
 `;
 
+const Loading = styled.div`
+  text-align: center;
+  padding: 10px 0;
+`;
+
+const Error = styled.div`
+  text-align: center;
+  padding: 10px 0;
+  color: red;
+`;
+
 interface Persons {
   value: string;
   removed: Array<number | string>;
   onRemove: (id: string | number) => void;
 }
 
-export interface PersonItem {
-  id: number;
-  name: string;
-  image: string;
-}
-
-const Persons = ({ value, onRemove, removed }: Persons) => {
-  const { data, loading, error } = useQuery(GET_PERSONS, {
+const Persons = ({ value, onRemove, removed }: Persons): JSX.Element | null => {
+  const { data, loading, error } = useQuery<
+    CharactersQuery,
+    CharactersQueryVariables
+  >(GET_PERSONS, {
     variables: {
       filter: {
         name: value,
@@ -33,31 +47,42 @@ const Persons = ({ value, onRemove, removed }: Persons) => {
     },
   });
 
-  if (loading) return null;
-  if (error) return null;
+  const [setPartyPerson] = useMutation(SET_PARTY_PERSON);
+  const setPerson = useCallback(
+    (person: Result | undefined) => {
+      if (person) {
+        setPartyPerson({
+          variables: {
+            person: person,
+          },
+        });
+      }
+    },
+    [setPartyPerson],
+  );
 
-  const {
-    characters: { results },
-  } = data;
+  if (error) return <Error>¯\_(ツ)_/¯ - Ooops. Something went wrong!</Error>;
 
-  return (
+  const results = data?.characters?.results;
+  const filteredByRemoved: ResultItem[] | undefined = results?.filter(
+    item =>
+      !removed.some(removedItem => removedItem === item?.id) && item !== null,
+  );
+
+  return loading ? (
+    <Loading>Loading...</Loading>
+  ) : (
     <PersonsContainer>
-      {results
-        ? results
-            .filter(
-              (item: PersonItem) =>
-                !removed.some(removedItem => removedItem === item.id),
-            )
-            .map((item: PersonItem) => (
-              <Person
-                id={item.id}
-                key={item.id}
-                imgUrl={item.image}
-                onRemove={(): void => onRemove(item.id)}
-                person={item}
-              />
-            ))
-        : null}
+      {filteredByRemoved &&
+        filteredByRemoved.map((item: ResultItem) => (
+          <Person
+            key={item?.id}
+            imgUrl={item?.image}
+            onRemove={(): void => onRemove(item?.id)}
+            setPerson={(): void => setPerson(item)}
+            person={item}
+          />
+        ))}
     </PersonsContainer>
   );
 };
